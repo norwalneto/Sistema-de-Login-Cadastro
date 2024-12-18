@@ -20,23 +20,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordInput.value;
 
         // Envio dos dados para o backend (processo de login)
-        fetch('http://localhost:8080/api/login', {
+        fetch('http://localhost:8080/api/usuarios/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password })
         })
-            .then(response => response.json()) // Espera a resposta em formato JSON
-            .then(data => {
-                if (data.success) {
-                    alert('Login bem-sucedido!');
+            .then((response) => response.json()) // Espera a resposta em formato JSON
+            .then((data) => {
+                if (data.status === 'sucesso') {
+                    alert(data.mensagem); // Exibe mensagem de sucesso
                     window.location.href = '/dashboard'; // Redireciona para a página principal
                 } else {
-                    alert('Erro no login. Verifique suas credenciais.');
+                    alert(data.mensagem); // Exibe a mensagem de erro do backend
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Erro na requisição de login:', error);
                 alert('Erro ao tentar realizar o login. Tente novamente.');
             });
@@ -52,29 +52,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const username = signupUsernameInput.value;
 
         // Verifica se a resposta está no formato esperado
-        fetch('http://localhost:8080/api/signup', {
+        fetch('http://localhost:8080/api/usuarios/cadastrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password, username })
         })
-            .then(response => {
-                if (!response.ok) {
-                    // Lida com o erro HTTP se a resposta não for "ok"
-                    throw new Error('Erro na requisição de cadastro: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Cadastro realizado com sucesso!');
+            .then((response) => response.json()) // Espera a resposta em formato JSON
+            .then((data) => {
+                if (data.status === 'sucesso') {
+                    alert(data.mensagem); // Exibe mensagem de sucesso
                     window.location.href = '/login'; // Redireciona para a página de login
                 } else {
-                    alert('Erro no cadastro. Tente novamente.');
+                    alert(data.mensagem); // Exibe a mensagem de erro do backend
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Erro na requisição de cadastro:', error);
                 alert('Erro ao tentar realizar o cadastro. Tente novamente.');
             });

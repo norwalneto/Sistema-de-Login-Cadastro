@@ -1,5 +1,6 @@
 package com.projeto.sistema_de_login_cadastro.service;
 
+import com.projeto.sistema_de_login_cadastro.dto.ResponseDTO;
 import com.projeto.sistema_de_login_cadastro.dto.UsuarioCadastroDTO;
 import com.projeto.sistema_de_login_cadastro.dto.UsuarioLoginDTO;
 import com.projeto.sistema_de_login_cadastro.model.Usuario;
@@ -20,17 +21,13 @@ public class UsuarioService {
     }
 
 
-    public String cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO) {
+    public ResponseDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO) {
         if (usuarioRepository.existsByEmail(usuarioCadastroDTO.getEmail())) {
-            return "Erro: Email já cadastrado.";
+            return new ResponseDTO("erro", "Email já cadastrado.");
         }
 
         if (usuarioRepository.existsByUsername(usuarioCadastroDTO.getUsername())) {
-            return "Erro: Username já cadastrado.";
-        }
-
-        if (usuarioRepository.existsByPassword(usuarioCadastroDTO.getPassword())) {
-            return "Erro: Password já cadastrado.";
+            return new ResponseDTO("erro", "Username já cadastrado.");
         }
 
         Usuario novoUsuario = new Usuario();
@@ -39,21 +36,22 @@ public class UsuarioService {
         novoUsuario.setPassword(usuarioCadastroDTO.getPassword());
 
         usuarioRepository.save(novoUsuario);
-        return "Usuário cadastrado com sucesso!";
+        return new ResponseDTO("sucesso", "Usuário cadastrado com sucesso!");
+
     }
 
-    public String loginUsuario(UsuarioLoginDTO usuarioLoginDTO) {
+    public ResponseDTO loginUsuario(UsuarioLoginDTO usuarioLoginDTO) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioLoginDTO.getEmail());
 
         if (usuarioOptional.isEmpty()) {
-            return "Erro: Usuário não encontrado.";
+            return new ResponseDTO("erro", "Usuário não encontrado.");
         }
 
         Usuario usuario = usuarioOptional.get();
         if (!usuario.getPassword().equals(usuarioLoginDTO.getPassword())) {
-            return "Erro: Senha incorreta.";
+            return new ResponseDTO("erro", "Senha incorreta.");
         }
 
-        return "Login realizado com sucesso!";
+        return new ResponseDTO("sucesso", "Login realizado com sucesso!");
     }
 }
