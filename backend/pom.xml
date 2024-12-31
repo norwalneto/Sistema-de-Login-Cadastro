@@ -64,7 +64,12 @@
 		<dependency>
 			<groupId>com.azure.spring</groupId>
 			<artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
-			<version>5.14.0</version>
+			<version>6.0.0-beta.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>spring-cloud-azure-autoconfigure</artifactId>
+			<version>5.14.0</version>  <!-- Verifique a versão mais recente -->
 		</dependency>
 	</dependencies>
 
